@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.db
+backend/.venv/
+backend/swachchhohat.db
+
