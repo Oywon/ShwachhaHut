@@ -36,6 +36,19 @@ npm run dev
 
 Vite proxies `/api` to `http://localhost:8000`. Set `VITE_API_BASE_URL` to the deployed API's `/api/v1` URL when deploying the frontend.
 
+## Vercel multi-service deployment
+
+The root `vercel.json` defines two services: `app` (Vite at `/`) and `backend` (FastAPI routed publicly under `/api/*`). The API already mounts its routes at `/api/v1`, and the frontend uses the same-origin `/api/v1` path. Browser requests enter through Vercel's public rewrite; neither service makes a server-side call to the other, so no service binding is needed.
+
+Before deploying, configure these Vercel project environment variables for **Production** (and Preview if desired):
+
+- `APP_ENV=production`
+- `DATABASE_URL` set to a persistent managed PostgreSQL URL. SQLite is rejected in production because Vercel function storage is ephemeral.
+- `SECRET_KEY` set to a unique random value of at least 32 characters. Do not commit it or share it in chat.
+- `CORS_ORIGINS` set to the frontend origin(s) only if cross-origin browser access is needed; same-origin `/api` routing does not require CORS.
+
+Vercel Services deployment has not yet been verified. Link this repository to a Vercel project and configure the production environment variables above before deploying.
+
 ### Development-only accounts
 
 Run the seed script to create accounts. All seeded accounts use password `DemoOnly!234`:

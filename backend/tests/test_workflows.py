@@ -204,3 +204,12 @@ def test_production_requires_an_explicit_signing_secret():
     with pytest.raises(ValidationError, match="SECRET_KEY"):
         Settings(app_env="production", secret_key="")
 
+
+def test_production_rejects_ephemeral_sqlite_database():
+    with pytest.raises(ValidationError, match="persistent PostgreSQL"):
+        Settings(
+            app_env="production",
+            secret_key="test-production-key-with-more-than-32-characters",
+            database_url="sqlite:///./swachchhohat.db",
+        )
+

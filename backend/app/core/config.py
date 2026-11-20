@@ -22,6 +22,8 @@ class Settings(BaseSettings):
             self.secret_key = secrets.token_urlsafe(48)
         if self.app_env == "production" and len(self.secret_key) < 32:
             raise ValueError("SECRET_KEY must be at least 32 characters in production")
+        if self.app_env == "production" and self.database_url.startswith("sqlite"):
+            raise ValueError("DATABASE_URL must use a persistent PostgreSQL database in production")
         return self
 
     @property
