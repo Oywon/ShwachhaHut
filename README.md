@@ -157,7 +157,9 @@ Before deploying, configure these Vercel project environment variables for **Pro
 - `SECRET_KEY` set to a unique random value of at least 32 characters. Do not commit it or share it in chat.
 - `CORS_ORIGINS` set to the frontend origin(s) only if cross-origin browser access is needed; same-origin `/api` routing does not require CORS.
 
-Vercel Services deployment has not yet been verified. Link this repository to a Vercel project and configure the production environment variables above before deploying.
+The backend accepts `postgres://` and `postgresql://` provider URLs and routes them through the installed Psycopg 3 SQLAlchemy driver.
+
+The Vercel project `oywons-projects/swachchhohat` is linked to this local checkout. Production deployment is pending a persistent `DATABASE_URL`; the local Vercel build has not completed on Windows because the CLI could not create package symlinks. No production deployment has been verified.
 
 ---
 

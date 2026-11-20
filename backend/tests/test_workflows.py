@@ -6,7 +6,7 @@ from pydantic import ValidationError
 from sqlalchemy import select
 
 from app.core.config import Settings
-from app.core.db import SessionLocal
+from app.core.db import SessionLocal, normalize_database_url
 from app.models import AuditEvent, InventoryLot, ProductionCost, SaleTransaction, User
 from app.security import hash_password
 from app.services.audit import verify_entity_chain
@@ -220,4 +220,10 @@ def test_api_documentation_uses_public_api_prefix(client):
     assert docs.status_code == 200
     assert openapi.status_code == 200
     assert "/api/v1/health" in openapi.json()["paths"]
+
+
+def test_postgres_urls_use_installed_psycopg_driver():
+    assert normalize_database_url("postgres://user:pass@host/db") == "postgresql+psycopg://user:pass@host/db"
+    assert normalize_database_url("postgresql://user:pass@host/db") == "postgresql+psycopg://user:pass@host/db"
+    assert normalize_database_url("postgresql+psycopg://user:pass@host/db") == "postgresql+psycopg://user:pass@host/db"
 
