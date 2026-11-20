@@ -213,3 +213,11 @@ def test_production_rejects_ephemeral_sqlite_database():
             database_url="sqlite:///./swachchhohat.db",
         )
 
+
+def test_api_documentation_uses_public_api_prefix(client):
+    docs = client.get("/api/docs")
+    openapi = client.get("/api/openapi.json")
+    assert docs.status_code == 200
+    assert openapi.status_code == 200
+    assert "/api/v1/health" in openapi.json()["paths"]
+
